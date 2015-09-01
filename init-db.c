@@ -1,3 +1,8 @@
+/*
+ * GIT - The information manager from hell
+ *
+ * Copyright (C) Linus Torvalds, 2005
+ */
 #include "cache.h"
 
 int main(int argc, char **argv)
@@ -10,6 +15,12 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	/*
+	 * If you want to, you can share the DB area with any number of branches.
+	 * That has advantages: you can save space by sharing all the SHA1 objects.
+	 * On the other hand, it might just make lookup slower and messier. You
+	 * be the judge.
+	 */
 	sha1_dir = getenv(DB_ENVIRONMENT);
 	if (sha1_dir) {
 		struct stat st;
@@ -18,6 +29,9 @@ int main(int argc, char **argv)
 		fprintf(stderr, "DB_ENVIRONMENT set to bad directory %s: ", sha1_dir);
 	}
 
+	/*
+	 * The default case is to have a DB per managed directory. 
+	 */
 	sha1_dir = DEFAULT_DB_ENVIRONMENT;
 	fprintf(stderr, "defaulting to private storage area\n");
 	len = strlen(sha1_dir);
